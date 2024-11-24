@@ -29,6 +29,9 @@
             border-radius: 10px;
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .card:hover {
@@ -37,66 +40,103 @@
         }
 
         .card img {
-            height: 200px;
-            object-fit: cover;
+            height: 250px; /* Make images smaller */
+            width: 100%;
+            object-fit: contain;
         }
 
-        
-        .text-center {
-            text-align: center;
+        .card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .card-body h3, .card-body h5 {
-            margin: 10px 0;
+        .card-body h3 {
+            font-size: 18px;
+            color: #555;
         }
 
-        form {
-            display: inline;
+        .card-body h5 {
+            font-size: 16px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .card-body p {
+            font-size: 14px;
+            color: #666;
         }
 
         .btnn {
-          background-color: #007bff; /* A calming blue background color */
-          color: #fff; /* White text for contrast */
-          border: none;
-          border-radius: 30px; /* Rounded corners for a modern look */
-          padding: 12px 25px; /* Balanced padding for a consistent button size */
-          font-size: 16px; /* Easy-to-read font size */
-          text-transform: uppercase; /* Uniform uppercase text */
-          letter-spacing: 0.8px; /* Slight letter spacing for readability */
-          font-weight: 600; /* Slightly bolder font for emphasis */
-          transition: all 0.3s ease; /* Smooth transition for hover and active effects */
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-      }
-      
-      .btnn:hover {
-          background-color: #0056b3; /* Darker blue for hover effect */
-          transform: translateY(-3px); /* Slight elevation on hover */
-          box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Enhance shadow on hover */
-      }
-      
-      .btnn:active {
-          background-color: #003f7f; /* Even darker blue on click */
-          transform: translateY(0); /* Reset elevation */
-          box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow when active */
-      }
-      
-      .btnn:focus {
-          outline: none; /* Remove default outline */
-          box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Custom focus outline */
-      }
-      
-      
+            background-color: #0077b6;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            padding: 8px 20px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
+        }
+
+        .btnn:hover {
+            background-color: #0077b6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .btnn:active {
+            background-color: #0077b6;
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btnn:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        /* Responsive layout: 3 items in one row */
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px; /* Adds spacing between cards */
+        }
+
+        .col-lg-4, .col-md-6, .col-sm-12 {
+            flex: 1 1 calc(33.3333% - 30px); /* 3 items per row, with gap */
+            max-width: calc(33.3333% - 30px); /* For large screens */
+        }
+
+        /* For smaller screens */
+        @media (max-width: 992px) {
+            .col-md-6 {
+                flex: 1 1 calc(50% - 30px); /* 2 items per row */
+                max-width: calc(50% - 30px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .col-sm-12 {
+                flex: 1 1 100%; /* 1 item per row */
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
-    <%- include('../partials/header') %>
+    
     <%- include('../partials/navbar') %>
     <%- include('../partials/flash') %>
 
     <div class="container mt-5">
         <h2>Displaying All The Products</h2>
-        <div class="row">
-            <% for(let item of products) { %>
+        <div class="row justify-content-start">
+            <% for (let item of products) { %>
                 <div class="col-lg-4 col-md-6 col-sm-12 product-card">
                     <div class="card text-center shadow">
                         <img src="<%= item.img %>" class="card-img-top" alt="Product Image">
@@ -104,11 +144,11 @@
                             <h3 class="card-title"><%= item.name %></h3>
                             <h5 class="card-title">Rs: <%= item.price %></h5>
                             <p class="card-text"><%= item.desc %></p>
-                            <a href="/products/<%= item._id %>" class="btn btnn">View Product</a>
+                            <a href="/products/<%= item._id %>" class="btn btnn mt-2">View Product</a>
                             <% if (currentUser && currentUser.role === "seller") { %>
-                                <a href="/products/<%= item._id %>/edit" class="btn btnn">Edit Product</a>
+                                <a href="/products/<%= item._id %>/edit" class="btn btnn mt-2">Edit Product</a>
                                 <form action="/products/<%= item._id %>?_method=DELETE" method="POST">
-                                    <button type="submit" class="btn btnn">Delete Product</button>
+                                    <button type="submit" class="btn btnn mt-2">Delete Product</button>
                                 </form>
                             <% } %>
                         </div>
